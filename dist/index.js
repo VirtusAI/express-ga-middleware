@@ -16,17 +16,11 @@ function ExpressGA(uaCode) {
         visitor.event(options.category, options.action, options.label, options.value, function (err) { return emitted ? emitted(err) : null; });
     }
     var middleware = function (req, res, next) {
-        if (!req.headers['x-forwarded-for']) {
-            req.headers['x-forwarded-for'] = '0.0.0.0';
-        }
         visitor.pageview({
             dp: req.originalUrl,
             dr: req.get('Referer'),
             ua: req.headers['user-agent'],
-            uip: req.connection.remoteAddress
-                || req.socket.remoteAddress
-                || req.connection.remoteAddress
-                || req.headers['x-forwarded-for'].split(',').pop()
+            uip: req.ip
         }).send();
         req.ga = {
             event: GAEventEmitter

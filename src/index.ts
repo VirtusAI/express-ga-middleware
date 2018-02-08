@@ -46,17 +46,11 @@ export function ExpressGA(uaCode: string): ExpressGAHandler {
   }
 
   let middleware = <ExpressGAHandler> function (req: Request, res: Response, next: NextFunction) {
-    if (!req.headers['x-forwarded-for']) {
-      req.headers['x-forwarded-for'] = '0.0.0.0'
-    }
     visitor.pageview({
       dp: req.originalUrl,
       dr: req.get('Referer'),
       ua: req.headers['user-agent'],
-      uip: req.connection.remoteAddress
-      || req.socket.remoteAddress
-      || req.connection.remoteAddress
-      || (<string>req.headers['x-forwarded-for']).split(',').pop()
+      uip: req.ip
     }).send();
     req.ga = {
         event: GAEventEmitter
