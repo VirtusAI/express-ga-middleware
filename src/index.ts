@@ -4,7 +4,7 @@
 
 import * as ua from 'universal-analytics'
 import {Request, Response, RequestHandler, NextFunction} from 'express'
-import {v5 as uuidv5} from 'uuid'
+import * as uuidv5 from 'uuid/v5'
 declare module 'express' {
   export interface Request {
     ga: {
