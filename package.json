@@ -25,7 +25,8 @@
   },
   "homepage": "https://github.com/championswimmer/express-ga-middleware#readme",
   "dependencies": {
-    "universal-analytics": "^0.4.15"
+    "universal-analytics": "^0.4.15",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "@types/express": "4",

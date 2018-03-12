@@ -4,6 +4,7 @@
 
 import * as ua from 'universal-analytics'
 import {Request, Response, RequestHandler, NextFunction} from 'express'
+import {v5 as uuidv5} from 'uuid'
 declare module 'express' {
   export interface Request {
     ga: {
@@ -46,11 +47,15 @@ export function ExpressGA(uaCode: string): ExpressGAHandler {
   }
 
   let middleware = <ExpressGAHandler> function (req: Request, res: Response, next: NextFunction) {
+    let uidSeed = req.ip + req.headers['user-agent'];
+    let uid = uuidv5(uidSeed, '8c2087dc-f231-48ca-bbaf-9ab6c0953398');
+
     visitor.pageview({
       dp: req.originalUrl,
       dr: req.get('Referer'),
       ua: req.headers['user-agent'],
-      uip: req.ip
+      uip: req.ip,
+      uid: uid
     }).send();
     req.ga = {
         event: GAEventEmitter

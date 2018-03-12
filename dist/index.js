@@ -4,6 +4,7 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var ua = require("universal-analytics");
+var uuid_1 = require("uuid");
 function ExpressGA(uaCode) {
     var visitor = ua(uaCode, { https: true });
     function GAEventMiddleware(options) {
@@ -16,11 +17,14 @@ function ExpressGA(uaCode) {
         visitor.event(options.category, options.action, options.label, options.value, function (err) { return emitted ? emitted(err) : null; });
     }
     var middleware = function (req, res, next) {
+        var uidSeed = req.ip + req.headers['user-agent'];
+        var uid = uuid_1.v5(uidSeed, '8c2087dc-f231-48ca-bbaf-9ab6c0953398');
         visitor.pageview({
             dp: req.originalUrl,
             dr: req.get('Referer'),
             ua: req.headers['user-agent'],
-            uip: req.ip
+            uip: req.ip,
+            uid: uid
         }).send();
         req.ga = {
             event: GAEventEmitter
