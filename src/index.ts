@@ -25,7 +25,7 @@ export interface GAEventOptions {
 
 
 export function ExpressGA(uaCode: string): ExpressGAHandler {
-  let visitor = ua(uaCode);
+  let visitor = ua(uaCode, {https: true});
 
   function GAEventMiddleware (options: GAEventOptions): RequestHandler {
 

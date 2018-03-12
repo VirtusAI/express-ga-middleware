@@ -5,7 +5,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var ua = require("universal-analytics");
 function ExpressGA(uaCode) {
-    var visitor = ua(uaCode);
+    var visitor = ua(uaCode, { https: true });
     function GAEventMiddleware(options) {
         return function (req, res, next) {
             visitor.event(options.category, options.action, options.label, options.value).send();
